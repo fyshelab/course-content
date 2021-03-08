@@ -53,12 +53,12 @@ conv_ae = ConvAutoEncoder(K=K)
 assert conv_ae.encode(my_dataset[0][0].unsqueeze(0)).numel() == K, \
     "Encoder output size should be K!"
 conv_losses = train_autoencoder(conv_ae, my_dataset)
-with plt.xkcd():
-    plt.figure()
-    plt.plot(lin_losses)
-    plt.plot(conv_losses)
-    plt.legend(['Lin AE', 'Conv AE'])
-    plt.xlabel('Training batch')
-    plt.ylabel('MSE Loss')
-    plt.ylim([0,2*max(torch.as_tensor(conv_losses).median(), torch.as_tensor(lin_losses).median())])
-    plt.show()
+
+plt.figure()
+plt.plot(lin_losses)
+plt.plot(conv_losses)
+plt.legend(['Lin AE', 'Conv AE'])
+plt.xlabel('Training batch')
+plt.ylabel('MSE Loss')
+plt.ylim([0,2*max(torch.as_tensor(conv_losses).median(), torch.as_tensor(lin_losses).median())])
+plt.show()
