@@ -4,16 +4,17 @@ def generate_images(autoencoder, K, n_images=1):
 
     returns (n_images, channels, height, width) tensor of images
     """
+    # Concatenate tuples to get (n_images, channels, height, width)
+    output_shape = (n_images,) + my_dataset_size
     with torch.no_grad():
         z = torch.randn(n_images, K) # n_images along batch dimension
-        x = autoencoder.decode(z).reshape((n_images,) + my_dataset_size)
+        x = autoencoder.decode(z).reshape(output_shape)
         return x
 
-
 images = generate_images(conv_ae, K, n_images=25)
-
-plt.figure(figsize=(5,5))
-for i in range(25):
-    plt.subplot(5,5,i+1)
-    plot_torch_image(images[i])
-plt.show()
+with plt.xkcd():
+    plt.figure(figsize=(5,5))
+    for i in range(25):
+        plt.subplot(5,5,i+1)
+        plot_torch_image(images[i])
+    plt.show()
