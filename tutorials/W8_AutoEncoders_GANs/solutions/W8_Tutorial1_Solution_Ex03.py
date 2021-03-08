@@ -12,9 +12,9 @@ def generate_images(autoencoder, K, n_images=1):
         return x
 
 images = generate_images(conv_ae, K, n_images=25)
-with plt.xkcd():
-    plt.figure(figsize=(5,5))
-    for i in range(25):
-        plt.subplot(5,5,i+1)
-        plot_torch_image(images[i])
-    plt.show()
+
+plt.figure(figsize=(5,5))
+for i in range(25):
+    plt.subplot(5,5,i+1)
+    plot_torch_image(images[i])
+plt.show()
