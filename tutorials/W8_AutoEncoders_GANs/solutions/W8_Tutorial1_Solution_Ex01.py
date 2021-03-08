@@ -44,10 +44,10 @@ def train_autoencoder(autoencoder, dataset, epochs=20, batch_size=250):
 
 lin_ae = LinearAutoEncoder(K)
 lin_losses = train_autoencoder(lin_ae, my_dataset)
-with plt.xkcd():
-    plt.figure()
-    plt.plot(lin_losses)
-    plt.ylim([0, 2*torch.as_tensor(lin_losses).median()])
-    plt.xlabel('Training batch')
-    plt.ylabel('MSE Loss')
-    plt.show()
+
+plt.figure()
+plt.plot(lin_losses)
+plt.ylim([0, 2*torch.as_tensor(lin_losses).median()])
+plt.xlabel('Training batch')
+plt.ylabel('MSE Loss')
+plt.show()
