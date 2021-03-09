@@ -5,6 +5,7 @@ def rsample(phi, n_samples):
     standard deviation
     """
     b, kplus1 = phi.size()
-    eps = torch.randn(b, n_samples, kplus1-1, device=phi.device)
+    k = kplus1-1
     mu, sig = phi[:, :-1], phi[:,-1].exp()
-    return eps*sig.view(b,1,1) + mu.view(b,1,kplus1-1)
+    eps = torch.randn(b, n_samples, k, device=phi.device)
+    return eps*sig.view(b,1,1) + mu.view(b,1,k)

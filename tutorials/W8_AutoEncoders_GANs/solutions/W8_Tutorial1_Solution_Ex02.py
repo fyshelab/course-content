@@ -21,9 +21,11 @@ class ConvAutoEncoder(nn.Module):
         self.enc_bias = BiasLayer(my_dataset_size)
         self.enc_conv_1 = nn.Conv2d(my_dataset_size[0], num_filters, filter_size)
         self.enc_conv_2 = nn.Conv2d(num_filters, num_filters, filter_size)
+        self.enc_flatten = nn.Flatten()
         self.enc_lin = nn.Linear(flat_size_after_conv, K)
 
         self.dec_lin = nn.Linear(K, flat_size_after_conv)
+        self.dec_unflatten = nn.Unflatten(dim=-1, unflattened_size=self.shape_after_conv)
         self.dec_deconv_1 = nn.ConvTranspose2d(num_filters, num_filters, filter_size)
         self.dec_deconv_2 = nn.ConvTranspose2d(num_filters, my_dataset_size[0], filter_size)
         self.dec_bias = BiasLayer(my_dataset_size)
@@ -32,19 +34,20 @@ class ConvAutoEncoder(nn.Module):
         s = self.enc_bias(x)
         s = F.relu(self.enc_conv_1(s))
         s = F.relu(self.enc_conv_2(s))
-        h = self.enc_lin(s.view(x.size()[0], -1))
+        s = self.enc_flatten(s)
+        h = self.enc_lin(s)
         return h
     
     def decode(self, h):
         s = F.relu(self.dec_lin(h))
-        s = F.relu(self.dec_deconv_1(s.view((-1,) + self.shape_after_conv)))
+        s = self.dec_unflatten(s)
+        s = F.relu(self.dec_deconv_1(s))
         s = self.dec_deconv_2(s)
         x_prime = self.dec_bias(s)
         return x_prime
 
     def forward(self, x):
         return self.decode(self.encode(x))
-
 
 conv_ae = ConvAutoEncoder(K=K)
 assert conv_ae.encode(my_dataset[0][0].unsqueeze(0)).numel() == K, \
