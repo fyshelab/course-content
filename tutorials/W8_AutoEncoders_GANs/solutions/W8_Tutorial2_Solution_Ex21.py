@@ -3,10 +3,8 @@ def get_disc_BCE_loss(disc_real_pred, disc_fake_pred):
     Function for returning a BCE loss of discriminator
 
     Parameters:
-        disc_real_pred: probs of real predicted by the disc
-        using a real batch, (num_samples, 1)
-        probs of real predicted by the disc
-        using a fake batch, (num_samples, 1)
+        disc_real_pred: probs of real predicted by the disc using a real batch, (num_samples, 1)
+        disc_fake_pred: probs of real predicted by the disc using a fake batch, (num_samples, 1)
 
     Returns:
         BCE loss of the two prediction batches, a scalar
