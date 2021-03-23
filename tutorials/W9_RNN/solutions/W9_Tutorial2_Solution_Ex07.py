@@ -5,7 +5,7 @@ class Encoder(nn.Module):
         super(Encoder, self).__init__()
         # Embedding layer
         self.embedding = nn.Embedding(vocab_size, embed_size)
-        self.rnn = nn.GRU(embed_size, num_hiddens, num_layers,
+        self.gru = nn.GRU(embed_size, num_hiddens, num_layers,
                           dropout=dropout)
 
     def forward(self, X):
@@ -16,7 +16,7 @@ class Encoder(nn.Module):
         # In RNN models, the first axis corresponds to time steps
         X = X.permute(1, 0, 2)
         # When state is not mentioned, it defaults to zeros
-        output, state = self.rnn(X)
+        output, state = self.gru(X)
         # `output` shape: (`num_steps`, `batch_size`, `num_hiddens`)
         # `state` shape: (`num_layers`, `batch_size`, `num_hiddens`)
         return output, state
@@ -29,7 +29,7 @@ class Decoder(nn.Module):
         super(Decoder, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embed_size)
         
-        self.rnn = nn.GRU(embed_size + num_hiddens, num_hiddens, num_layers,
+        self.gru = nn.GRU(embed_size + num_hiddens, num_hiddens, num_layers,
                           dropout=dropout)
         self.dense = nn.Linear(num_hiddens, vocab_size)
         self.dropout = nn.Dropout(0.25)
@@ -44,7 +44,7 @@ class Decoder(nn.Module):
         # Broadcast `context` so it has the same `num_steps` as `X`
         context = state[-1].repeat(X.shape[0], 1, 1)
         X_and_context = torch.cat((X, context), 2)
-        output, state = self.rnn(X_and_context, state)
+        output, state = self.gru(X_and_context, state)
         output = self.dense(output).permute(1, 0, 2)
         # `output` shape: (`batch_size`, `num_steps`, `vocab_size`)
         # `state` shape: (`num_layers`, `batch_size`, `num_hiddens`)
