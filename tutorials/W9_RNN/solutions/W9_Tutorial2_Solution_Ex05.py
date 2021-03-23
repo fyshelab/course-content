@@ -7,12 +7,12 @@ class TaggingRNN(nn.Module):
         self.n_layers = n_layers
         
         self.embedding = nn.Embedding(input_size, hidden_size)
-        self.rnn = nn.GRU(hidden_size, hidden_size, n_layers)
+        self.gru = nn.GRU(hidden_size, hidden_size, n_layers)
         self.linear = nn.Linear(hidden_size, 3)
     
     def forward(self, input, hidden):
         input = self.embedding(input.view(1, -1)) 
-        output, hidden = self.rnn(input.view(1, 1, -1), hidden)
+        output, hidden = self.gru(input.view(1, 1, -1), hidden)
         out = self.linear(hidden)
         return out, hidden
 
