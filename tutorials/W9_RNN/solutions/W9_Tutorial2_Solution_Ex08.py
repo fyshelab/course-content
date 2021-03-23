@@ -1,4 +1,4 @@
-def predict_seq2seq(net, src_sentence, device):
+def predict_seq2seq(net, src_sentence):
     """Predict for sequence to sequence."""
     # Set `net` to eval mode for inference
     net.eval()
