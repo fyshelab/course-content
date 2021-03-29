@@ -1,0 +1,5 @@
+### Question
+Compare the reward plots and policies of Q-learning and SARSA. Do they take the same path to reach the terminal state? Why does one look more conservative than the other?
+
+### Answer
+SARSA appears to be more conservative than Q-learning. The path taken by SARSA is one step away from the cliff, whereas that taken by Q-learning is right on the edge. We also see this behavior from the higher variance in the reward plot of Q-learning. The reason is that SARSA constructs its TD target by taking one more on-policy action. Consider updating the value of action "right" at an edge cell. The TD target for Q-learning involves the value of the next greedy action, which will converge to "right" after some iterations. The TD target for SARSA involves the value of the next epsilon-greedy action, which always has a chance of being "down" aka "falling off the cliff." Thus, SARSA assign a lower values to action "right" for edge cells.

@@ -1,0 +1,5 @@
+### Question
+Construct the path from the policy visualization and see that following the policy from the initial state indeed leads to terminal state. Now change gamma to 1.0 and rerun the code. Does policy iteration still converge? Why are we stuck on policy evaluation? (This is a brain-teaser, so don't spend too much time on it, and don't let the code run for too long.)
+
+### Answer
+Policy iteration fails to converge because we're stuck at the first policy evaluation step. The initial policy is all zeros, which means we take action "up" at all states. Consider what happens at the top left corner. Going up at this state will lead to a reward of -1 and transitioning back to itself. Since gamma = 1, we have V(s) = V(s) - 1, which never converges. This can be avoided by setting gamma < 1. The evaluation will halt when V(s) = gamma * V(s) - 1.
