@@ -1,4 +1,3 @@
-# to_remove solution
 class ReplayBuffer:
   def __init__(self, state_dim, act_dim, buffer_size):
     self.buffer_size = buffer_size
