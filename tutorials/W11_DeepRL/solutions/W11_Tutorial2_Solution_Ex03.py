@@ -1,4 +1,3 @@
-# to_remove solution
 class DQNAgent:
   def __init__(self, policy, q_net, target_net, optimizer, tau, replay_buffer,
                batch_size, train_start):
