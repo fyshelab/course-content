@@ -3,7 +3,7 @@ def a2c(env, actor, critic, max_episodes, num_steps, gamma=0.99):
     average_lengths = []
     all_rewards = []
 
-    for episode in tqdm.tqdm(range(max_episodes), position=0, leave=True):
+    for episode in tqdm(range(max_episodes), position=0, leave=True):
         log_probs = []
         values = []
         rewards = []
@@ -33,6 +33,7 @@ def a2c(env, actor, critic, max_episodes, num_steps, gamma=0.99):
                 all_rewards.append(np.sum(rewards))
                 break
         
+        
         values = torch.stack(values)
         log_probs = torch.stack(log_probs)
 
@@ -43,6 +44,7 @@ def a2c(env, actor, critic, max_episodes, num_steps, gamma=0.99):
         for t in reversed(range(len(rewards))):
             Qval = rewards[t] + gamma * Qval
             Qvals[t] = Qval
+        
         
         # Compute advantage for all steps
         advantage = Qvals - values

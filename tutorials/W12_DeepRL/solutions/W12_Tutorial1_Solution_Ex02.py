@@ -26,8 +26,9 @@ class PolicyNetwork(nn.Module):
 def update_policy(policy_network, rewards, log_probs, gamma):
     discounted_rewards = []
     for t in range(len(rewards)):
+        # At each step, we compute the sum of discounted future rewards
         Gt = 0  # Gt is the sum of discounted future rewards
-        pow = 0 # pow is a variable used to keep track of the power of gamma
+        pow = 0 # pow keeps track of the power of discount factor gamma
         for r in rewards[t:]:
             # Compute discounted reward at the current time step
             # Note: rewards is a list consisting of reward in each step of episode
